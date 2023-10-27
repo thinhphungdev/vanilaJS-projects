@@ -4,7 +4,7 @@ const doubleBtn = document.getElementById('double');
 const showMillionairesBtn = document.getElementById('show-millionaires');
 const sortBtn = document.getElementById('sort');
 const calculateBtn = document.getElementById('calculate-wealth');
-const richest = document.getElementById('richest');
+const richestBtn = document.getElementById('richest');
 
 // List of user
 let data = [];
@@ -64,7 +64,7 @@ function updateDOM(providedData = data) {
 }
 
 function formatMoney(number) {
-  return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+  return '$' + number?.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 ////////////////////////////////////////////////////
@@ -101,7 +101,21 @@ function calculateEntireWealth() {
   main.appendChild(weathEl);
 }
 
-function getRichest() {}
+function getRichest() {
+  const richest = data.reduce((acc, cur) => {
+    if (cur?.money > acc) acc = cur.money;
+    return acc;
+  }, data?.[0].money);
+
+  const richestPerson = data.filter((user) => user.money == richest)?.[0];
+
+  const richestPersonEl = document.createElement('div');
+  richestPersonEl.innerHTML = `<h3>The Richest Man: <strong>${
+    richestPerson?.name
+  } with ${formatMoney(richestPerson?.money)}</strong></h3>`;
+
+  main.appendChild(richestPersonEl);
+}
 
 ////////////////////////////////////////////////////
 // Event Listener
@@ -116,3 +130,4 @@ onClickHandlerFactory(doubleBtn, doubleMoney);
 onClickHandlerFactory(showMillionairesBtn, showOnlyMillionaires);
 onClickHandlerFactory(sortBtn, sortByRichest);
 onClickHandlerFactory(calculateBtn, calculateEntireWealth);
+onClickHandlerFactory(richestBtn, getRichest);
