@@ -4,6 +4,7 @@ const doubleBtn = document.getElementById('double');
 const showMillionairesBtn = document.getElementById('show-millionaires');
 const sortBtn = document.getElementById('sort');
 const calculateBtn = document.getElementById('calculate-wealth');
+const richest = document.getElementById('richest');
 
 // List of user
 let data = [];
@@ -100,12 +101,18 @@ function calculateEntireWealth() {
   main.appendChild(weathEl);
 }
 
+function getRichest() {}
+
 ////////////////////////////////////////////////////
 // Event Listener
 ////////////////////////////////////////////////////
 
-addUserBtn.addEventListener('click', getRandomUser);
-doubleBtn.addEventListener('click', doubleMoney);
-showMillionairesBtn.addEventListener('click', showOnlyMillionaires);
-sortBtn.addEventListener('click', sortByRichest);
-calculateBtn.addEventListener('click', calculateEntireWealth);
+function onClickHandlerFactory(element, handlerFn) {
+  element.addEventListener('click', handlerFn);
+}
+
+onClickHandlerFactory(addUserBtn, getRandomUser);
+onClickHandlerFactory(doubleBtn, doubleMoney);
+onClickHandlerFactory(showMillionairesBtn, showOnlyMillionaires);
+onClickHandlerFactory(sortBtn, sortByRichest);
+onClickHandlerFactory(calculateBtn, calculateEntireWealth);
