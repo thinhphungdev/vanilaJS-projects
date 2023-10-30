@@ -5,7 +5,6 @@ const resultHeading = document.getElementById('result-heading');
 const singleMealEl = document.getElementById('single-meal');
 
 // HELPER METHODS
-
 //service
 function searchMeal(e) {
   e.preventDefault();
@@ -21,6 +20,16 @@ function searchMeal(e) {
   fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
     .then((res) => res.json())
     .then((data) => renderMeals(data, term));
+}
+
+function getMealById(mealId) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const meal = data.meals[0];
+
+      addMealToDOM(meal);
+    });
 }
 
 // render
@@ -49,3 +58,15 @@ function renderMeals(data, term) {
 
 // Event listener
 form.addEventListener('submit', searchMeal);
+
+// Click on each Meal Item to show full meal details
+mealsEl.addEventListener('click', (e) => {
+  e.stopPropagation();
+
+  const targetMealEl = e.target;
+
+  if (!targetMealEl.classList.contains('meal-info')) return false;
+
+  const mealID = targetMealEl.getAttribute('data-mealid');
+  console.log(mealID);
+});
