@@ -16,7 +16,6 @@ async function getPost() {
   );
 
   const data = await res.json();
-
   return data;
 }
 
@@ -72,18 +71,22 @@ function showLoading() {
   setTimeout(() => {
     loader.classList.remove('show');
 
-    page++;
-    showPosts();
+    setTimeout(() => {
+      page++;
+      showPosts();
+    }, 300);
   }, 600);
 }
 
 // Show loading when scroll to bottom
-function handleInfiniteScroll() {}
+function handleInfiniteScroll() {
+  throttle(() => {
+    const endOfPage =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight;
+    if (endOfPage) {
+      showLoading();
+    }
+  }, 800);
+}
 
-window.addEventListener('scroll', () => {
-  const endOfPage =
-    window.innerHeight + window.scrollY >= document.body.offsetHeight;
-  if (endOfPage) {
-    showLoading();
-  }
-});
+window.addEventListener('scroll', handleInfiniteScroll);
