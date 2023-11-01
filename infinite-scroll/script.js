@@ -1,9 +1,10 @@
 const postContainer = document.getElementById('posts-container');
-const loader = document.getElementById('loader');
+const loader = document.querySelector('.loader');
 const filter = document.getElementById('filter');
 
 const limit = 5;
-const page = 1;
+let page = 1;
+let throttleTimer;
 
 // INIT
 showPosts();
@@ -19,11 +20,20 @@ async function getPost() {
   return data;
 }
 
+// HELPER
+function throttle(callback, time) {
+  if (throttleTimer) return;
+  throttleTimer = true;
+
+  setTimeout(() => {
+    callback();
+    throttleTimer = false;
+  }, time);
+}
+
 // DOM related function
 async function showPosts() {
   const posts = await getPost();
-
-  postContainer.innerHTML = '';
 
   posts.forEach((post) => {
     const postElHTML = `
@@ -40,7 +50,6 @@ async function showPosts() {
   });
 
   // ALTERNATIVE
-
   //   posts.forEach((post) => {
   //     const postEl = document.createElement('div');
   //     postEl.classList.add('post');
@@ -55,3 +64,26 @@ async function showPosts() {
   //     postContainer.appendChild(postEl);
   //   });
 }
+
+// Show loader & fetch more posts
+function showLoading() {
+  loader.classList.add('show');
+
+  setTimeout(() => {
+    loader.classList.remove('show');
+
+    page++;
+    showPosts();
+  }, 600);
+}
+
+// Show loading when scroll to bottom
+function handleInfiniteScroll() {}
+
+window.addEventListener('scroll', () => {
+  const endOfPage =
+    window.innerHeight + window.scrollY >= document.body.offsetHeight;
+  if (endOfPage) {
+    showLoading();
+  }
+});
