@@ -7,16 +7,20 @@ let page = 1;
 let throttleTimer;
 
 // INIT
-showPosts();
+// showPosts();
 
 // SERVICE
 async function getPost() {
-  const res = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`
-  );
+  try {
+    const res = await fetch(
+      `https://jsonplaceholder.typicode.com/posts?_limit=${limit}&_page=${page}`
+    );
 
-  const data = await res.json();
-  return data;
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // HELPER
@@ -107,3 +111,6 @@ function handleInfiniteScroll() {
 
 window.addEventListener('scroll', handleInfiniteScroll);
 filter.addEventListener('input', filterPost);
+window.onload = function () {
+  showPosts();
+};
