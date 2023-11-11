@@ -51,6 +51,23 @@ function addEventListeners() {
     item.addEventListener('dragleave', dragLeave);
     item.addEventListener('drop', dragDrop);
   });
+
+  check.addEventListener('click', checkOrder);
+}
+
+function checkOrder() {
+  listItems.forEach((listItem, index) => {
+    listItem.classList.remove('right');
+    listItem.classList.remove('wrong');
+
+    const personName = listItem
+      .querySelector('.person-name')
+      .textContent.trim();
+
+    personName === richestPeople.at(index)
+      ? listItem.classList.add('right')
+      : listItem.classList.add('wrong');
+  });
 }
 
 function scrambleList(list) {
@@ -100,6 +117,7 @@ function swapItems(fromIndex, toIndex) {
 function dragEnter() {
   this.classList.add('over');
 }
+
 function dragLeave() {
   this.classList.remove('over');
 }
