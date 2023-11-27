@@ -3,4 +3,8 @@ const Store = {
   cart: [],
 };
 
-export default Store;
+const proxiedStore = new Proxy(Store, {
+  set(target, property, value) {},
+});
+
+export default proxiedStore;
