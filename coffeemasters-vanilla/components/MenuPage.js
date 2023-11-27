@@ -31,11 +31,14 @@ export class MenuPage extends HTMLElement {
     const menuEl = this.root.getElementById('menu');
 
     if (app.store.menu) {
+      menuEl.innerHTML = '';
+
       for (let category of app.store.menu) {
         const liCategory = document.createElement('li');
         liCategory.innerHTML = `
-          <h3></h3>
+          <h3>${category.name}</h3>
           <ul class='category'>
+            
           </ul>
           `;
         menuEl.appendChild(liCategory);
