@@ -32,16 +32,16 @@ const Router = {
 
     switch (route) {
       case '/':
-        pageElement = document.createElement('h1');
+        pageElement = document.createElement('menu-page');
         pageElement.textContent = 'Menu';
         break;
       case '/order':
-        pageElement = document.createElement('h1');
+        pageElement = document.createElement('order-page');
         pageElement.textContent = 'Your order';
         break;
       default:
         if (route.startWith('product-')) {
-          pageElement = document.createElement('h1');
+          pageElement = document.createElement('details-page');
           pageElement.textContent = 'Details';
           const paramsId = route.substring(route.lastIndexOf('-') + 1);
 
