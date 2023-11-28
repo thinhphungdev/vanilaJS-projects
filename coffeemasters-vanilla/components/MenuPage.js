@@ -30,28 +30,26 @@ export class MenuPage extends HTMLElement {
   render() {
     const menuEl = this.root.getElementById('menu');
 
-    if (app.store.menu) {
-      menuEl.innerHTML = '';
+    if (app.store.menu === null) menuEl.innerHTML = 'Loading...';
 
-      for (let category of app.store.menu) {
-        const liCategory = document.createElement('li');
+    menuEl.innerHTML = '';
 
-        liCategory.innerHTML = `
+    for (let category of app.store.menu) {
+      const liCategory = document.createElement('li');
+
+      liCategory.innerHTML = `
           <h3>${category.name}</h3>
           <ul class='category'>
 
           </ul>
           `;
-        menuEl.appendChild(liCategory);
+      menuEl.appendChild(liCategory);
 
-        category.products.forEach((product) => {
-          const item = document.createElement('product-item');
-          item.dataset.product = JSON.stringify(product);
-          liCategory.querySelector('ul').appendChild(item);
-        });
-      }
-    } else {
-      menuEl.innerHTML = 'Loading...';
+      category.products.forEach((product) => {
+        const item = document.createElement('product-item');
+        item.dataset.product = JSON.stringify(product);
+        liCategory.querySelector('ul').appendChild(item);
+      });
     }
   }
 }

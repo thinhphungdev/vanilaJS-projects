@@ -24,7 +24,7 @@ const Router = {
       history.pushState({ route }, '', route);
     }
 
-    const pageElement = Router.handleRouteAndCreatePageElement(route, null);
+    const pageElement = Router.createPageElementBasedOnRoute(route, null);
 
     const mainEl = document.querySelector('main');
 
@@ -39,7 +39,7 @@ const Router = {
     window.scrollY = 0;
   },
 
-  handleRouteAndCreatePageElement(route, pageElement = null) {
+  createPageElementBasedOnRoute(route, pageElement = null) {
     switch (route) {
       case '/':
         pageElement = document.createElement('menu-page');

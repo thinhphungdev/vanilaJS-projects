@@ -10,7 +10,7 @@ export async function addToCart(id) {
   const productAlreadyInCart = results.length === 1;
 
   if (!productAlreadyInCart) {
-    app.store.cart.push({ product, quantity: 1 });
+    app.store.cart;
     return;
   }
 }
