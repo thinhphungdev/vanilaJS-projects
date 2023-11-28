@@ -1,29 +1,21 @@
-import { getProductById } from './Menu';
+import { getProductById } from './Menu.js';
 
 export async function addToCart(id) {
   const product = await getProductById(id);
-
   const results = app.store.cart.filter(
-    (productInCart) => productInCart.product.id === id
+    (prodInCart) => prodInCart.product.id == id
   );
-
-  const productAlreadyInCart = results.length === 1;
-
-  if (productAlreadyInCart) {
-    // Update the current Item
-    app.store.cart = app.store.cart.map((product) => {
-      return product.product.id === id
-        ? { ...product, quantity: product.quantity + 1 }
-        : product;
-    });
+  if (results.length == 1) {
+    // The product is already in the cart
+    // update the current item
+    app.store.cart = app.store.cart.map((p) =>
+      p.product.id == id ? { ...p, quantity: p.quantity + 1 } : p
+    );
   } else {
-    // add new product
     app.store.cart = [...app.store.cart, { product, quantity: 1 }];
   }
 }
 
 export function removeFromCart(id) {
-  app.store.cart = app.store.cart.filter(
-    (product) => product.product.id !== id
-  );
+  app.store.cart = app.store.cart.filter((p) => p.product.id != id);
 }

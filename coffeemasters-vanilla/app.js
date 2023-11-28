@@ -12,7 +12,19 @@ window.app = {};
 app.store = Store;
 app.router = Router;
 
-window.addEventListener('DOMContentLoaded', async function () {
+window.addEventListener('DOMContentLoaded', init);
+
+window.addEventListener('appcartchange', displayCartBadgeIcon);
+
+function init() {
   loadMenu();
   app.router.init();
-});
+}
+
+function displayCartBadgeIcon(event) {
+  const badge = document.getElementById('badge');
+  const quantity = app.store.cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  badge.textContent = quantity;
+  badge.hidden = quantity == 0 ? true : false;
+}
