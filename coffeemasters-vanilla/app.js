@@ -8,6 +8,7 @@ import { DetailsPage } from './components/DetailsPage.js';
 import { OrderPage } from './components/OrderPage.js';
 import { ProductItem } from './components/ProductItem.js';
 
+// Config singleton app
 window.app = {};
 app.store = Store;
 app.router = Router;
