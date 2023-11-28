@@ -6,14 +6,14 @@ export async function loadMenu() {
 
 export async function getProductById(id) {
   if (app.store.menu == null) {
-    await loadMenu();
+    await loadData();
   }
-
-  for (let category of app.store.menu) {
-    for (let product of category.products) {
-      if (product.id === id) return product;
+  for (let c of app.store.menu) {
+    for (let p of c.products) {
+      if (p.id == id) {
+        return p;
+      }
     }
   }
-
   return null;
 }

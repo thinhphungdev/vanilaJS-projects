@@ -1,7 +1,5 @@
 const Router = {
-  init: function () {
-    // get all link on the webpage
-    // Loop through and attach event listener to them
+  init: () => {
     document.querySelectorAll('a.navlink').forEach((link) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -10,26 +8,38 @@ const Router = {
         Router.go(url);
       });
     });
-
-    // Event listener for URL changes
+    // Event Handler for URL changes
     window.addEventListener('popstate', (event) => {
       Router.go(event.state.route, false);
     });
 
     // Check the initial URL
-    if (location.pathname) {
-      Router.go(location.pathname);
-    }
+    Router.go(location.pathname);
   },
-  go: function (route, addToHistory = true) {
+
+  go: (route, addToHistory = true) => {
     console.log(`Going to ${route}`);
 
     if (addToHistory) {
       history.pushState({ route }, '', route);
     }
 
-    let pageElement;
+    const pageElement = Router.handleRouteAndCreatePageElement(route, null);
 
+    const mainEl = document.querySelector('main');
+
+    if (!pageElement) {
+      return (mainEl.innerHTML = 'Oups, 404!');
+    }
+
+    // document.querySelector("main").children[0].remove();
+    mainEl.innerHTML = '';
+    mainEl.appendChild(pageElement);
+    window.scrollX = 0;
+    window.scrollY = 0;
+  },
+
+  handleRouteAndCreatePageElement(route, pageElement = null) {
     switch (route) {
       case '/':
         pageElement = document.createElement('menu-page');
@@ -38,21 +48,14 @@ const Router = {
         pageElement = document.createElement('order-page');
         break;
       default:
-        if (route.startWith('product-')) {
+        if (route.startsWith('/product-')) {
           pageElement = document.createElement('details-page');
-          const paramsId = route.substring(route.lastIndexOf('-') + 1);
-
-          pageElement.dataset.id = paramsId;
+          const paramId = route.substring(route.lastIndexOf('-') + 1);
+          pageElement.dataset.productId = paramId;
         }
     }
 
-    const mainContainer = document.querySelector('main');
-    mainContainer.innerHTML = '';
-    // mainContainer.children.at(0).remove();
-    mainContainer.appendChild(pageElement);
-    window.scrollX = 0;
-    window.scrollY = 0;
+    return pageElement;
   },
 };
-
 export default Router;
