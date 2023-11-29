@@ -79,6 +79,9 @@ export class OrderPage extends HTMLElement {
       this.#user.email = '';
       this.#user.phone = '';
 
+      // Clear the cart
+      app.store.cart = [];
+
       // TODO: sent user and cart's details to the server
     });
 

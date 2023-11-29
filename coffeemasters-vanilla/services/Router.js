@@ -1,5 +1,3 @@
-import { loadMenu } from './Menu.js';
-
 const Router = {
   init: () => {
     document.querySelectorAll('a.navlink').forEach((link) => {
@@ -13,7 +11,6 @@ const Router = {
     // Event Handler for URL changes
     window.addEventListener('popstate', (event) => {
       Router.go(event.state.route, false);
-      if (event.state.route == '/') loadMenu();
     });
 
     // Check the initial URL
