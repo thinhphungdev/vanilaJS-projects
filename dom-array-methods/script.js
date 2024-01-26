@@ -67,6 +67,10 @@ function formatMoney(number) {
   return '$' + number?.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
+function onClickHandlerFactory(element, handlerFn) {
+  element.addEventListener('click', handlerFn);
+}
+
 ////////////////////////////////////////////////////
 // Update Logic
 ////////////////////////////////////////////////////
@@ -120,10 +124,6 @@ function getRichest() {
 ////////////////////////////////////////////////////
 // Event Listener
 ////////////////////////////////////////////////////
-
-function onClickHandlerFactory(element, handlerFn) {
-  element.addEventListener('click', handlerFn);
-}
 
 onClickHandlerFactory(addUserBtn, getRandomUser);
 onClickHandlerFactory(doubleBtn, doubleMoney);
