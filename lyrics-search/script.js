@@ -26,4 +26,38 @@ async function searchSongs(searchTerm) {
 // FEATURES
 
 // shows list of songs
-function showSongsData(data) {}
+function showSongsData(data) {
+  result.innerHTML = `
+    <ul class="songs">
+      ${data.data
+        .map(
+          (song) => `<li>
+      <span><strong>${song.artist.name}</strong> - ${song.title}</span>
+      <button class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
+    </li>`
+        )
+        .join('')}
+    </ul>
+  `;
+
+  if (!data.prev || !data.next) {
+    more.innerHTML = '';
+  }
+
+  if (data.prev) {
+    more.innerHTML = `
+      ${`<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>`}`;
+  }
+  if (data.next) {
+    more.innerHTML = `
+      ${`<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>`}`;
+  }
+}
+
+// get more songs
+async function getMoreSongs(url) {
+  const response = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
+  const data = await response.json();
+
+  showSongsData(data);
+}
