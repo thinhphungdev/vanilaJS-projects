@@ -24,7 +24,6 @@ async function searchSongs(searchTerm) {
 }
 
 // FEATURES
-
 // shows list of songs
 function showSongsData(data) {
   result.innerHTML = `
@@ -40,18 +39,22 @@ function showSongsData(data) {
     </ul>
   `;
 
-  if (!data.prev || !data.next) {
+  if (!data.prev && !data.next) {
     more.innerHTML = '';
   }
 
-  if (data.prev) {
-    more.innerHTML = `
-      ${`<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>`}`;
+  more.innerHTML = `
+  ${
+    data.prev
+      ? `<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>`
+      : ''
   }
-  if (data.next) {
-    more.innerHTML = `
-      ${`<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>`}`;
+  ${
+    data.next
+      ? `<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>`
+      : ''
   }
+`;
 }
 
 // get more songs
@@ -60,4 +63,35 @@ async function getMoreSongs(url) {
   const data = await response.json();
 
   showSongsData(data);
+}
+
+// GET LYRICS Button click handler
+
+result.addEventListener('click', (event) => {
+  const clickEl = event.target;
+
+  if (clickEl.tagName !== 'BUTTON') return;
+
+  const artist = event.target.dataset.artist;
+  const songTitle = event.target.dataset.songtitle;
+
+  getLyrics(artist, songTitle);
+});
+
+async function getLyrics(artist, songTitle) {
+  try {
+    const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
+    const data = await res.json();
+
+    const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
+
+    result.innerHTML = `
+    <h2><strong>${artist}</strong> - ${songTitle}</h2>
+            <span>${lyrics}</span>
+    `;
+  } catch (error) {
+    result.innerHTML = error;
+  }
+
+  more.innerHTML = '';
 }
